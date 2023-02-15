@@ -19,7 +19,6 @@ ranking = [];
 
 constructor(){
     this.nomeJogador();
-    this.jogo();
 }
     nomeJogador() {
      this.usuario = prompt("Digite o seu nome:");
