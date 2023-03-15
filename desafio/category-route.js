@@ -27,9 +27,9 @@ function addCategory(request, response, url, todos, categories) {
   request.on("end", () => {
     let category = JSON.parse(data);
     if (category.name) {
-      addID(categories);
-      addTimestemp(categories);
-      categories.push(categories);
+      addID(category);
+      addTimestemp(category);
+      categories.push(category);
       response.end();
     } else {
       response.statusCode = 400;
