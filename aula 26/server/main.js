@@ -29,8 +29,8 @@ const options = {
   encoding: "utf-8"
 };
 
-const { listTodos, addTodo, updateTodo, deleteTodo, setupCurrentIdTodos } = require("./routes/todos");
-const { listCategories, addCategory, updateCategory, deleteCategory, setupCurrentIdCategories } = require("./routes/category");
+const { listTodos, addTodo, updateTodo, deleteTodo } = require("./routes/todos");
+const { listCategories, addCategory, updateCategory, deleteCategory } = require("./routes/category");
 
 let todos = [];
 let categories = [];
@@ -38,7 +38,6 @@ let categories = [];
 fs.readFile(path.join("db", "category.json"), options, (error, data) => {
   if (!error){
     categories = JSON.parse(data);
-    setupCurrentIdCategories(categories);
   } else {
     console.error(error);
   }
@@ -47,27 +46,12 @@ fs.readFile(path.join("db", "category.json"), options, (error, data) => {
 fs.readFile(path.join("db", "todo.json"), options, (error, data) => {
   if (!error){
     todos = JSON.parse(data);
-    setupCurrentIdTodos(todos);
   } else {
     console.error(error);
   }
 })
 
-const writeTODOtoFile = () => {
-  fs.writeFile(path.join("db", "todo.json"), JSON.stringify(todos), (err) => {
-    if(err){
-      console.error(err);
-    }
-  });
-}
 
-const writeCATEGORYtoFile = () => {
-  fs.writeFile(path.join("db", "category.json"), JSON.stringify(categories), (err) => {
-    if(err){
-      console.error(err);
-    }
-  });
-}
 
 function processRequest(request, response){
 
@@ -82,10 +66,11 @@ function processRequest(request, response){
               addTodo(request, response, reqUrl, connection);
               break;
             case "PUT":
-              updateTodo(request, response, reqUrl, todos, categories, writeTODOtoFile);
+              //UPDATE 
+              updateTodo(request, response, reqUrl, connection);
               break;
             case "DELETE":
-              deleteTodo(request, response, reqUrl, todos, categories, writeTODOtoFile);
+              deleteTodo(request, response, reqUrl, connection);
               break;
         }
     } else if (reqUrl.pathname == "/category"){
@@ -94,13 +79,13 @@ function processRequest(request, response){
               listCategories(request, response, reqUrl, connection);
               break;
             case "POST":
-              addCategory(request, response, reqUrl, todos, categories, writeCATEGORYtoFile);
+              addCategory(request, response, reqUrl, connection);
               break;
             case "PUT":
-              updateCategory(request, response, reqUrl, todos, categories, writeCATEGORYtoFile);
+              updateCategory(request, response, reqUrl, connection);
               break;
             case "DELETE":
-              deleteCategory(request, response, reqUrl, todos, categories, writeCATEGORYtoFile);
+              deleteCategory(request, response, reqUrl, connection);
               break;
         }
     }
