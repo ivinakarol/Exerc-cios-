@@ -32,26 +32,6 @@ const options = {
 const { listTodos, addTodo, updateTodo, deleteTodo } = require("./routes/todos");
 const { listCategories, addCategory, updateCategory, deleteCategory } = require("./routes/category");
 
-let todos = [];
-let categories = [];
-
-fs.readFile(path.join("db", "category.json"), options, (error, data) => {
-  if (!error){
-    categories = JSON.parse(data);
-  } else {
-    console.error(error);
-  }
-})
-
-fs.readFile(path.join("db", "todo.json"), options, (error, data) => {
-  if (!error){
-    todos = JSON.parse(data);
-  } else {
-    console.error(error);
-  }
-})
-
-
 
 function processRequest(request, response){
 
