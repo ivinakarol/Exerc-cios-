@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql2');
 const app = express();
+app.use(express.json());
 const port = 3000;
 
 // Desafio
@@ -93,8 +94,8 @@ app.post('/todo', (request, response) => {
     });
     request.on("end", () => {
       let task = JSON.parse(data);
-      if (task.title && task.description) {
-        connection.query(`INSERT INTO todo (title, description) VALUES ('${task.title}', '${task.description}')`, (error, result) => {
+      if (task.categoryId && task.title && task.description) {
+        connection.query(`INSERT INTO todo (title, description, category_id) VALUES ('${task.title}', '${task.description}', '${task.categoryId}')`, (error, result) => {
           if (error) {
             response.status(500).send("SERVER ERROR");
           } else {
